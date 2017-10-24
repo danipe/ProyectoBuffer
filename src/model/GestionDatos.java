@@ -79,9 +79,16 @@ public class GestionDatos {
 			}
 			for(int i = 0; i<lineas.size(); i++) {
 				if(lineas.get(i)!=null) {
-					if(str.compareTo(lineas.get(i))<0) {
-						str = lineas.get(i);
+					if(tipo_orden) {
+						if(str.compareTo(lineas.get(i))<0) {
+							str = lineas.get(i);
+						}
+					} else {
+						if(str.compareTo(lineas.get(i))>0) {
+							str = lineas.get(i);
+						}
 					}
+					
 				}
 			}
 			ordenadas.add(str);
