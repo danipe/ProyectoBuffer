@@ -42,30 +42,21 @@ public class GestionDatos {
         return response;
 	}
 	
-	public int buscarPalabra (String fichero1, String palabra, boolean primera_aparicion) throws IOException{
+	public int buscarPalabra (String fichero1, String palabra, boolean primera) throws IOException{
         int numeroLineas = 0;
-        int ultimaOcurrencia = 0;
-        boolean palabraEncontrada = false;
+        int ocurrencia = 0;
 	    BufferedReader file1 = openFile(fichero1);
-	    while ((fichero1 = file1.readLine()) != null) {
+	    String s;
+	    while ((s = file1.readLine()) != null) {
 	    		numeroLineas++;
-	    		if(primera_aparicion) {
-	        		if(fichero1.equalsIgnoreCase(palabra)) {
-	            		closeFile(file1);
-	        			return numeroLineas;
-	        		}
-	    		}else {
-	    			if(fichero1.equalsIgnoreCase(palabra)) {
-	    				ultimaOcurrencia = numeroLineas;
-	    				palabraEncontrada = true;
+	    		if(s.equals(palabra)) {
+	    			ocurrencia = numeroLineas;
+	    			if(primera) {
+	    				break;
 	    			}
 	    		}
 	    }
-        if(palabraEncontrada) {
-	        return ultimaOcurrencia;
-        }else {
-            return -1;
-        }
+        return ocurrencia;
 	}	
 	
 	public void ordenarFichero (String fichero1, String fichero2, boolean tipo_orden) throws IOException {

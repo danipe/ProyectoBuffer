@@ -84,16 +84,15 @@ public class GestionEventos {
 	}
 
 	private void call_buscarPalabra() {
-		int status;
 		try {
-			status = model.buscarPalabra(view.getFichero1().getText(), view.getPalabra().getText(), view.getPrimera().isSelected());
-			if(status != -1) {
-				view.getTextArea().setText("La palabra: "+view.getPalabra().getText()+" ha sido encontrada en la linea"+status);
+			int ocurrencia = model.buscarPalabra(view.getFichero1().getText(), view.getPalabra().getText(), view.getPrimera().isSelected());
+			if(ocurrencia > 0) {
+				view.getTextArea().setText("La palabra "+view.getPalabra().getText()+" se ha encontrado en la linea: "+ocurrencia);
 			}else{
 				view.showError("La palabra "+view.getPalabra().getText()+" no ha sido encontrada");
 			}
 		} catch (IOException e) {
-			view.showError("Ha ocurrido un error, lo lamentamos");
+			view.showError("Hubo un error al buscar la palabra en el fichero");
 		}
 	}
 	
@@ -110,9 +109,9 @@ public class GestionEventos {
 	private void call_copiarFichero() {
 		try{
 			model.copiarFichero(view.getFichero1().getText(), view.getFichero2().getText());
-			view.getTextArea().setText("El archivo: "+view.getFichero2().getText()+" ha sido generado correctamente");
+			view.getTextArea().setText("Se ha copiado el archivo: "+view.getFichero1().getText());
 		}catch(IOException io) {
-			view.showError("Ha ocurrido un error, comprueba los campos");
+			view.showError("Hubo un error copiando el fichero");
 
 		}
 	}
