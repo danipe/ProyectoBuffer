@@ -27,21 +27,19 @@ public class GestionDatos {
 	}
 	
 	public boolean compararContenido (String fichero1, String fichero2)  throws IOException{
-        ArrayList<String> stringOnFiles = new ArrayList<String>();
         BufferedReader b1 = openFile(fichero1);
         BufferedReader b2 = openFile(fichero2);
-        while ((fichero1 = b1.readLine()) != null) {
-        		stringOnFiles.add(fichero1);
+        String s;
+        boolean response = true;
+        while ((s = b1.readLine()) != null) {
+        		if(!s.equals(b2.readLine())) {
+        			response = false;
+        			break;
+        		}
         }
         closeFile(b1);
-
-        while ((fichero2 = b2.readLine()) != null) {
-            if (stringOnFiles.contains(fichero2)) {
-               return true;
-            }
-        }
         closeFile(b2);
-        return false;
+        return response;
 	}
 	
 	public int buscarPalabra (String fichero1, String palabra, boolean primera_aparicion) throws IOException{

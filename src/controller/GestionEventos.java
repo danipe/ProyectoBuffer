@@ -74,18 +74,16 @@ public class GestionEventos {
 	private void call_compararContenido() {
 		try {
 			if(model.compararContenido(view.getFichero1().getText(), view.getFichero2().getText())) {
-				view.getTextArea().setText("Los dos archivos tienen las mismas palabras");
+				view.getTextArea().setText("Los ficheros son iguales");
 			}else {
-				view.showError("Los dos archivos no tienen las mismas palabras");
+				view.getTextArea().setText("Los ficheros no son iguales");
 			}
 		} catch (IOException e) {
-			view.showError("Ha ocurrido un error, revise los campos");
+			view.showError("Hubo un error leyendo los ficheros");
 		}
 	}
 
 	private void call_buscarPalabra() {
-		//Codigo de errores: 
-		// -1 - palabra no encontrada
 		int status;
 		try {
 			status = model.buscarPalabra(view.getFichero1().getText(), view.getPalabra().getText(), view.getPrimera().isSelected());
