@@ -1,11 +1,13 @@
 package model;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -60,7 +62,7 @@ public class GestionDatos {
 	}	
 	
 	public void ordenarFichero (String fichero1, String fichero2, boolean tipo_orden) throws IOException {
-		FileOutputStream fos = new FileOutputStream(fichero2);
+		BufferedWriter bw = new BufferedWriter(new FileWriter(fichero2));
 		BufferedReader br = new BufferedReader(new FileReader(fichero1));
 		ArrayList<String> lineas = new ArrayList<String>();
 		ArrayList<String> ordenadas = new ArrayList<String>();
@@ -92,10 +94,12 @@ public class GestionDatos {
 				}
 			}
 			ordenadas.add(str);
+			bw.append(str+"\n");
 			lineas.set(lineas.indexOf(str), null);
 		}
 		System.out.println(ordenadas.toString());
-		fos.close();
+		bw.close();
+		br.close();
 	}
 	
 	public void copiarFichero(String fichero1, String fichero2) throws IOException {
@@ -161,7 +165,8 @@ public class GestionDatos {
 			FileInputStream fis = new FileInputStream(f);
 			ObjectInputStream ois = new ObjectInputStream(fis);
 			Libro l = (Libro) ois.readObject();
-			
+			ois.close();
+			fis.close();
 			return l;
 		} else {
 			return null;
@@ -179,10 +184,74 @@ public class GestionDatos {
 			ois.close();
 		}
 		return libros;
-		
 	}
 	
+	public Libro editarPaginas(String libro, String paginas) throws ClassNotFoundException, IOException {
+		/*
+		 * Ejercicio 1:
+		 * 
+		 * Creamos un objeto file con el titulo del libro dentro de la carpeta libros y un objeto libro que lo inicializamos a null.
+		 * 
+		 * Después leemos el objeto, borramos el fichero para volverlo a crear, editamos las páginas a lo que haya introducido
+		 * el usuario en el textArea y volvemos a guardar el Libro en el fichero.
+		 * 
+		 * Hecho esto lo devolvemos.
+		 * 
+		 * Si el fichero no existe devolvemos null.
+		 * */
+		Libro l = null;
+		File f = new File("libros\\"+libro);
+		if(f.exists()) {
+			FileInputStream fis = new FileInputStream(f);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			l = (Libro) ois.readObject();
+			ois.close();
+			fis.close();
+			f.delete();
+			f.createNewFile();
+			FileOutputStream fos = new FileOutputStream(f);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			l.setPaginas(paginas);
+			oos.writeObject(l);
+			fos.close();
+			oos.close();
+		}else {
+			return null;
+		}
+		return l;
+	}
 	
+	public int medirPalabras(String fichero, String palabras) throws NumberFormatException, IOException {
+		/*
+		 * Ejercicio 2:
+		 * 
+		 * Iniciamos dos variables int, una nos servirá para guardar la longitud a superar y la otra nos guardará
+		 * el número de palabras que superan dicha longitud
+		 * 
+		 * Por cada linea del fichero comprobamos si la palabra es mas larga que la longitud que introdujo el usuario,
+		 * si es así incrementamos en 1 la variable "i".
+		 * 
+		 * Si el fichero no existe devolvemos -1.
+		 * */
+		int i = 0;
+		int pals = Integer.parseInt(palabras);
+		File f = new File(fichero);
+		if(f.exists()) {
+			FileReader fr = new FileReader(f);
+			BufferedReader br = new BufferedReader(fr);
+			String s;
+			while((s = br.readLine()) != null) {
+				if(s.length()>pals) {
+					i++;
+				}
+			}
+			br.close();
+			fr.close();
+		} else {
+			return -1;
+		}
+		return i;
+	}
 	
 
 }

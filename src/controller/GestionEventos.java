@@ -13,7 +13,11 @@ public class GestionEventos {
 
 	private GestionDatos model;
 	private LaunchView view;
-	private ActionListener actionListener_comparar, actionListener_buscar,actionListener_ordenarFichero, actionListener_creaCopia, actionListener_guardarLibro, actionListener_leerLibro, actionListener_leerLibros;
+	private ActionListener actionListener_comparar, actionListener_buscar,
+	actionListener_ordenarFichero, actionListener_creaCopia, actionListener_guardarLibro, 
+	actionListener_leerLibro, actionListener_leerLibros, actionListener_editarPaginas,
+	actionListener_medirPalabras;
+	
 
 	public GestionEventos(GestionDatos model, LaunchView view) {
 		this.model = model;
@@ -69,6 +73,31 @@ public class GestionEventos {
 			}
 		};
 		view.getBtnRecuperarLibros().addActionListener(actionListener_leerLibros);
+		/*
+		 * Ejercico 1:
+		 * 
+		 * Creamos el actionListener del botón "Editar Páginas" y le asignamos la función a la que tendrá que llamar
+		 * */
+		actionListener_editarPaginas = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				call_editarPaginas();
+			}
+		};
+		
+		view.getBtnEditarPginas().addActionListener(actionListener_editarPaginas);
+		
+		/*
+		 * Ejercicio 2:
+		 * 
+		 * Creamos el ActionListener del botón "Comprobar palabras" y le asignamos la función que tendrá que llamar
+		 * */
+		actionListener_medirPalabras = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				call_medirPalabras();
+			}
+		};
+		view.getBtnComprobarPalabras().addActionListener(actionListener_medirPalabras);
+		
 	}
 
 	private void call_compararContenido() {
@@ -150,9 +179,9 @@ public class GestionEventos {
 		} catch (FileNotFoundException e) {
 			view.showError("No se encuentra el fichero");
 		} catch (ClassNotFoundException e) {
-			view.showError("Hubo un error leyendo el fichero");
+			e.printStackTrace();
 		} catch (IOException e) {
-			view.showError("Hubo un error leyendo el fichero");
+			e.printStackTrace();
 		}
 	}
 	
@@ -174,6 +203,65 @@ public class GestionEventos {
 			view.showError("Hubo un error leyendo los ficheros");
 		} catch (IOException e) {
 			view.showError("Hubo un error leyendo los ficheros");
+		}
+	}
+	
+	private void call_editarPaginas() {
+		/*
+		 * Ejercicio 1:
+		 * 
+		 * 
+		 * Llamamos a la funcion "editarPaginas" del modelo enviandole el titulo 
+		 * del libro que ha introducido el usuario y el numero de páginas que deberá 
+		 * tener el libro. Esta función nos devolverá el Libro ya editado o null, según 
+		 * si existe el libro o no.
+		 * 
+		 * */
+		try {
+			Libro l = model.editarPaginas(view.getTextFieldTitulo().getText(), view.getTextFieldPaginas().getText());
+			if(l != null) {
+				String s = "Libro actualizado: \n\n";
+				s += "\t Título: "+l.getTitulo()+" \n\n";
+				s += "\t Autor: "+l.getAutor()+" \n\n";
+				s += "\t Año de publicación: "+l.getPubli()+" \n\n";
+				s += "\t Editor: "+l.getEditor()+" \n\n";
+				s += "\t Nº de páginas: "+l.getPaginas()+" \n\n";
+				view.getTextArea().setText(s);
+			} else {
+				view.showError("El libro no existe");
+			}
+			
+		} catch (ClassNotFoundException e) {
+			view.showError("Hubo un problema leyendo el libro");
+		} catch (IOException e) {
+			view.showError("Hubo un problema leyendo el fichero");
+		}
+	}
+	
+	private void call_medirPalabras() {
+		/*
+		 * Ejercicio 2:
+		 * 
+		 * Llamamos a la función "medirPalabras" del modelo pasándole el nombre del fichero y la longitud que
+		 * deberan superar las palabras.
+		 * 
+		 * Si el fichero no existe nos devolverá -1.
+		 * 
+		 * 
+		 * */
+		try {
+			int i = model.medirPalabras(view.getFichero1().getText(), view.getTextFieldPalabras().getText());
+			if(i > 0) {
+				view.getTextArea().setText("Existen "+i+" palabras con longitud mas grande que "+view.getTextFieldPalabras().getText());
+			} else if(i==0) {
+				view.showError("No existe ninguna palabra mas grande");
+			} else {
+				view.showError("No existe el fichero");
+			}
+		} catch (NumberFormatException e) {
+			view.showError("No has introducido un numero correcto");
+		} catch (IOException e) {
+			view.showError("Hubo un problema leyendo el archivo");
 		}
 	}
 

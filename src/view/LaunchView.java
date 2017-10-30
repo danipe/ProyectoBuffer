@@ -67,6 +67,10 @@ public class LaunchView extends JFrame {
 	private JButton btnGuardarLibro;
 	private JButton btnRecuperarLibros;
 	private JButton btnEncontrarLibro;
+	private JButton btnEditarPginas;
+	private JLabel lblNPalabras;
+	private JTextField textFieldPalabras;
+	private JButton btnComprobarPalabras;
 	
 	public LaunchView() {
 		
@@ -104,12 +108,22 @@ public class LaunchView extends JFrame {
 		panel.add(buscar);
 		panel.add(ordenarFichero);
 		panel.add(copia);
+		
+		btnComprobarPalabras = new JButton("Comprobar palabras");
+		panel.add(btnComprobarPalabras);
 		panel.add(label_f1);
 		panel.add(fichero1);
 		panel.add(label_f2);
 		panel.add(fichero2);
 		panel.add(label_pal);
 		panel.add(palabra);
+		
+		lblNPalabras = new JLabel("Longitud Palabra");
+		panel.add(lblNPalabras);
+		
+		textFieldPalabras = new JTextField();
+		panel.add(textFieldPalabras);
+		textFieldPalabras.setColumns(10);
 		panel.add(primera);
 		panel.add(tipo_orden);
 		panel.add(textArea);
@@ -160,9 +174,36 @@ public class LaunchView extends JFrame {
         
         btnEncontrarLibro = new JButton("Encontrar libro");
         panel.add(btnEncontrarLibro);
+        
+        btnEditarPginas = new JButton("Editar p\u00E1ginas");
+        panel.add(btnEditarPginas);
 		
 	}	
 	
+	public JTextField getTextFieldPalabras() {
+		return textFieldPalabras;
+	}
+
+	public void setTextFieldPalabras(JTextField textFieldPalabras) {
+		this.textFieldPalabras = textFieldPalabras;
+	}
+
+	public JButton getBtnComprobarPalabras() {
+		return btnComprobarPalabras;
+	}
+
+	public void setBtnComprobarPalabras(JButton btnComprobarPalabras) {
+		this.btnComprobarPalabras = btnComprobarPalabras;
+	}
+
+	public JButton getBtnEditarPginas() {
+		return btnEditarPginas;
+	}
+
+	public void setBtnEditarPginas(JButton btnEditarPginas) {
+		this.btnEditarPginas = btnEditarPginas;
+	}
+
 	public JButton getBtnGuardarLibro() {
 		return btnGuardarLibro;
 	}
